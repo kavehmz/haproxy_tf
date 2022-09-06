@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+apt-get update
+apt-get install -y haproxy
+
+cat > /etc/haproxy/haproxy.cfg << EOT
+${haproxycfg}
+EOT
+
+ifconfig ens5:1 172.31.0.12
+ifconfig ens5:2 172.31.0.13
+ifconfig ens5:3 172.31.0.14
+
+/etc/init.d/haproxy restart
+

@@ -1,0 +1,15 @@
+defaults
+    mode tcp
+
+%{ for name, bind in db_binding }
+# ${name}
+frontend ${name}
+    bind ${bind["ip"]}:5432
+    default_backend ${name}
+
+backend ${name}
+    %{ for db, ip in bind.backend }
+    # ${db}
+    server db ${ip}:5432
+    %{ endfor ~}
+%{ endfor ~}
