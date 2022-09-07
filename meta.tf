@@ -18,3 +18,7 @@ resource "aws_key_pair" "kmz" {
   key_name   = "kmz"
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIESr7RepHsk0YZ2ZzOlciHygJBv5NU/XxdRew5QRiOPi kaveh"
 }
+
+data "aws_subnet" "test_subnet" {
+  id = var.subnet_id
+}
