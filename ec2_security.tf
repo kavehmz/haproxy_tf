@@ -1,7 +1,7 @@
 resource "aws_security_group" "test_group" {
   name        = "test"
   description = "temp test"
-  vpc_id      = data.aws_subnet.test_subnet.vpc_id
+  vpc_id      = data.aws_subnet.lb_subnet.vpc_id
 
   ingress {
     description = "local"

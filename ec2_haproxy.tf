@@ -1,6 +1,6 @@
 
 resource "aws_network_interface" "lb_master_cr" {
-  subnet_id       = data.aws_subnet.test_subnet.id
+  subnet_id       = data.aws_subnet.lb_subnet.id
   security_groups = [aws_security_group.test_group.id]
 
   # IP addresses per network interface per instance type
