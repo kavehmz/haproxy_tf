@@ -1,6 +1,6 @@
-resource "aws_security_group" "test_group" {
-  name        = "test"
-  description = "temp test"
+resource "aws_security_group" "lb_group" {
+  name        = "LB Security Group"
+  description = "LB Security Group"
   vpc_id      = data.aws_subnet.lb_subnet.vpc_id
 
   ingress {
@@ -27,6 +27,14 @@ resource "aws_security_group" "test_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "http_test"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -36,6 +44,6 @@ resource "aws_security_group" "test_group" {
   }
 
   tags = {
-    Name = "test_group"
+    Name = "lb_group"
   }
 }

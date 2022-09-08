@@ -4,7 +4,7 @@ defaults
 %{ for name, bind in lb_binding }
 # ${name}
 frontend ${name}
-    bind ${bind["ip"]}:5432
+    bind ${bind["ip"]}:${bind["port"]}
     default_backend ${name}
 
 backend ${name}

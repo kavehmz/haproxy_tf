@@ -2,9 +2,10 @@ variable "lb_binding" {
   type = map(any)
   default = {
     "first_binding" = {
-      ip = "172.31.0.11"
+      ip   = "172.31.0.11"
+      port = "80"
       backend = {
-        cr_master = "192.168.1.1:5432"
+        cr_master = "172.31.0.31:80"
       }
     }
   }
