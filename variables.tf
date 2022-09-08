@@ -16,7 +16,7 @@ variable "lb_ips" {
 }
 
 
-variable "subnet_id" {
+variable "subnet_cidr" {
   type    = string
-  default = "subnet-0ca900a17d26d5103"
+  default = "172.31.0.0/20"
 }

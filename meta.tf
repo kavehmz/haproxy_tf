@@ -20,5 +20,8 @@ resource "aws_key_pair" "kmz" {
 }
 
 data "aws_subnet" "test_subnet" {
-  id = var.subnet_id
+  filter {
+    name   = "cidr-block"
+    values = [var.subnet_cidr]
+  }
 }
