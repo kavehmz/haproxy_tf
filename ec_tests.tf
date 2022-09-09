@@ -53,7 +53,15 @@ resource "aws_instance" "tests" {
   user_data = <<EOF
 #!/bin/bash
 apt-get update
-apt-get install -y nginx
+apt-get install -y nginx postgresql-all
+sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/13/main/postgresql.conf
+echo "host all all 172.16.0.0/12 md5" >> /etc/postgresql/13/main/pg_hba.conf
+pg_ctlcluster restart 13 main
+sleep 5
+sudo -u postgres psql -c "CREATE DATABASE test"
+sudo -u postgres psql -d test  -c "CREATE TABLE cfg AS SELECT 'instance' AS KEY, 'lb2' AS VAL;"
+sudo -u postgres psql -c "CREATE ROLE test WITH LOGIN PASSWORD 'dummy'"
+sudo -u postgres psql -c "GRANT ALL on DATABASE test to test"
 EOF
 }
 
