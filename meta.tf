@@ -25,3 +25,12 @@ data "aws_subnet" "lb_subnet" {
     values = [var.subnet_cidr]
   }
 }
+
+locals {
+  user_data = templatefile("init/init.tftpl", {
+    haproxycfg = templatefile("config/haproxy.cfg.tftpl", {
+      lb_binding = var.lb_binding,
+    })
+    lb_ips = var.lb_ips,
+  })
+}
