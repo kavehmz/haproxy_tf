@@ -50,25 +50,48 @@ resource "aws_instance" "tests" {
     network_interface_id = aws_network_interface.tests[count.index].id
     device_index         = 0
   }
-  user_data = <<EOF
-#!/bin/bash
-apt-get update
-apt-get install -y nginx postgresql-all
-sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/13/main/postgresql.conf
-echo "host all all 172.16.0.0/12 md5" >> /etc/postgresql/13/main/pg_hba.conf
-pg_ctlcluster restart 13 main
-sleep 5
-sudo -u postgres psql -c "CREATE DATABASE test"
-sudo -u postgres psql -d test  -c "CREATE TABLE cfg AS SELECT 'instance' AS KEY, 'lb2' AS VAL;"
-sudo -u postgres psql -c "CREATE ROLE test WITH LOGIN PASSWORD 'dummy'"
-sudo -u postgres psql -c "GRANT ALL on DATABASE test to test"
-EOF
+  tags = {
+    Name = format("test-db%d", count.index + 1)
+  }
+  user_data_replace_on_change = true
+  user_data = templatefile("db-init.sh", {index=count.index+1})
 }
 
-output "tests_public_ips" {
+
+resource "aws_network_interface" "test_client" {
+  subnet_id               = data.aws_subnet.lb_subnet.id
+  security_groups         = [aws_security_group.test_group.id]
+  private_ip_list_enabled = true
+  private_ip_list         = [var.test_client_ip]
+}
+
+resource "aws_instance" "test_client" {
+  ami           = data.aws_ami.debian.id
+  instance_type = "t3.medium"
+  key_name      = aws_key_pair.kmz.key_name
+  network_interface {
+    network_interface_id = aws_network_interface.test_client.id
+    device_index         = 0
+  }
+  tags = {
+    Name = "test-client"
+  }
+  user_data_replace_on_change = true
+  user_data = templatefile("client-init.sh", {})
+}
+
+output "test_db_public_ips" {
   value = aws_instance.tests[*].public_ip
 }
 
-output "tests_private_ips" {
+output "test_db_private_ips" {
   value = aws_instance.tests[*].private_ip
+}
+
+output "test_client_public_ip" {
+  value = aws_instance.test_client[*].public_ip
+}
+
+output "test_client_private_ip" {
+  value = aws_instance.test_client[*].private_ip
 }
