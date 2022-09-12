@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 apt-get update
-apt-get install -y haproxy
+apt-get install -y haproxy htop
 
 cat > /etc/haproxy/haproxy.cfg << EOT
 ${haproxycfg}
@@ -10,4 +10,4 @@ EOT
 ifconfig ens5:${i} ${ip}
 %{ endfor ~}
 
-/etc/init.d/haproxy restart
+systemctl restart haproxy.service

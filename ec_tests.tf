@@ -77,7 +77,12 @@ resource "aws_instance" "test_client" {
     Name = "test-client"
   }
   user_data_replace_on_change = true
-  user_data = templatefile("client-init.sh", {})
+  user_data = templatefile("client-init.sh", {
+    db1_ip = aws_network_interface.tests[0].private_ip_list[0]
+    db2_ip = aws_network_interface.tests[1].private_ip_list[0]
+    lb_ext_ip = aws_instance.lb_master_cr.public_ip
+    lb_int_ip = aws_network_interface.lb_master_cr.private_ip_list[0]
+  })
 }
 
 output "test_db_public_ips" {
