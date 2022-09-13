@@ -1,15 +1,37 @@
-defaults
-    mode tcp
+global
+    stats socket /run/haproxy-stats.sock mode 600 level admin
+%{ for name, bind in lb_binding ~}
+    stats socket ipv4@${bind.ip}:5999 level admin
+%{ endfor ~}
+    stats timeout 10m
+    stats maxconn 20
+    log stdout format short local0
+    chroot /var/lib/haproxy
+    user haproxy
+    group haproxy
+    maxconn 2000
 
-%{ for name, bind in lb_binding }
+defaults
+    log global
+    option tcplog
+    mode tcp
+    timeout connect 5s
+    timeout queue 200		# msec
+    timeout client 10m
+    timeout client-fin 30s
+    timeout server 10m
+    timeout server-fin 30s
+    timeout tunnel 10h		# this has to cover the longest SQL statement
+
+%{ for name, bind in lb_binding ~}
 # ${name}
 frontend ${name}
     bind ${bind["ip"]}:${bind["port"]}
     default_backend ${name}
 
 backend ${name}
-    %{ for dbname, dbserver in bind.backend }
+%{ for dbname, dbserver in bind.backend ~}
     # ${dbname}
     server db ${dbserver}
-    %{ endfor ~}
+%{ endfor ~}
 %{ endfor ~}

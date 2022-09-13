@@ -6,8 +6,4 @@ cat > /etc/haproxy/haproxy.cfg << EOT
 ${haproxycfg}
 EOT
 
-%{ for i,ip in lb_ips }
-ifconfig ens5:${i} ${ip}
-%{ endfor ~}
-
 systemctl restart haproxy.service

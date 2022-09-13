@@ -27,7 +27,7 @@ EOF
 
 install -o admin -g admin -m 0755 /dev/stdin ~admin/bench.sh <<'EOF'
 #!/bin/bash
-pgbench <<<'select val from cfg' -c1 -n -f /dev/stdin -l "$@"
+pgbench <<<'select val from cfg' -n -f /dev/stdin -l "$@"
 EOF
 
 install -o admin -g admin -m 0755 /dev/stdin ~admin/switch.sh <<'EOF'
@@ -45,7 +45,7 @@ ip=$${map[$1]}
     exit 1
 }
 
-socat STDIO unix:/run/haproxy-master.sock <<XXX
-@1 set server pg_binding/db addr $ip
+socat STDIO TCP:${lb_int_ip}:5999 <<XXX
+set server pg_binding/db addr $ip
 XXX
 EOF
