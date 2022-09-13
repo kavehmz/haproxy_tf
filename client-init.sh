@@ -29,3 +29,23 @@ install -o admin -g admin -m 0755 /dev/stdin ~admin/bench.sh <<'EOF'
 #!/bin/bash
 pgbench <<<'select val from cfg' -c1 -n -f /dev/stdin -l "$@"
 EOF
+
+install -o admin -g admin -m 0755 /dev/stdin ~admin/switch.sh <<'EOF'
+#!/bin/bash
+
+declare -A map
+map[db1]=${db1_ip}
+map[db2]=${db2_ip}
+
+ip=$${map[$1]}
+
+[ "$ip" ] || {
+    echo >&2 "$1 not found."
+    echo >&2 "Please choose one of $${!map[@]}"
+    exit 1
+}
+
+socat STDIO unix:/run/haproxy-master.sock <<XXX
+@1 set server pg_binding/db addr $ip
+XXX
+EOF
