@@ -14,14 +14,20 @@ global
 defaults
     log global
     option tcplog
+    option clitcpka             # TCP keep-alive on the client side
+    option srvtcpka             # TCP keep-alive on the server side
     mode tcp
     timeout connect 5s
-    timeout queue 200		# msec
+    timeout queue 200ms
     timeout client 10m
     timeout client-fin 30s
     timeout server 10m
     timeout server-fin 30s
-    timeout tunnel 10h		# this has to cover the longest SQL statement
+    timeout tunnel 24d          # This has to cover the longest SQL statement.
+                                # PG never closes a connection on its own.
+                                # So why should we?
+                                # 24d is the maximum that fits into a signed
+                                # 4 bytes int.
 
 %{ for name, bind in lb_binding ~}
 # ${name}
