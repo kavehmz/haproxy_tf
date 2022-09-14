@@ -13,12 +13,12 @@ variable "lb_binding" {
 
 variable "lb_ips" {
   type    = list(string)
-  default = ["172.30.12.100"]
+  default = ["172.31.16.100"]
 }
 
 variable "subnet_cidr" {
   type    = string
-  default = "172.30.12.0/24"
+  default = "172.31.16.0/20"
 }
 
 variable "lb_tags" {
