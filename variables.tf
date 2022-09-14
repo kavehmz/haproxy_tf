@@ -2,10 +2,10 @@ variable "lb_binding" {
   type = map(any)
   default = {
     "pg_binding" = {
-      ip   = "172.31.0.11"
+      ip   = "172.30.12.100"
       port = "5432"
       backend = {
-        cr_master = "172.31.0.31:5432"
+        cr_master = "172.30.12.78:5432"
       }
     }
   }
@@ -13,16 +13,10 @@ variable "lb_binding" {
 
 variable "lb_ips" {
   type    = list(string)
-  default = ["172.31.0.11", "172.31.0.12", "172.31.0.13", "172.31.0.14"]
+  default = ["172.30.12.100"]
 }
-
-variable "test_client_ip" {
-  type    = string
-  default = "172.31.0.40"
-}
-
 
 variable "subnet_cidr" {
   type    = string
-  default = "172.31.0.0/20"
+  default = "172.30.12.0/24"
 }

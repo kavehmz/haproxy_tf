@@ -9,10 +9,15 @@ resource "aws_network_interface" "lb_master_cr" {
   private_ip_list         = var.lb_ips
 
   tags = {
-    Name = "lb_master_cr"
+    Name = "lb_vr_replica"
   }
 }
 
+resource "aws_eip" "lb_public_ip" {
+  vpc                       = true
+  network_interface         = aws_network_interface.lb_master_cr.id
+  associate_with_private_ip = var.lb_ips[0]
+}
 
 resource "null_resource" "user_data_diff_keeper" {
   triggers = {
@@ -26,6 +31,7 @@ resource "aws_instance" "lb_master_cr" {
   user_data                   = local.user_data
   user_data_replace_on_change = true
   key_name                    = aws_key_pair.kmz.key_name
+  monitoring                  = true
 
   network_interface {
     network_interface_id = aws_network_interface.lb_master_cr.id
@@ -33,7 +39,7 @@ resource "aws_instance" "lb_master_cr" {
   }
 
   tags = {
-    Name = "lb_master_cr"
+    Name = "lb_vr_replica"
   }
 }
 
