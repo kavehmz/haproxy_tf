@@ -26,11 +26,8 @@ resource "aws_instance" "lb" {
     network_interface_id = aws_network_interface.lb.id
     device_index         = 0
   }
-
-
 }
 
 output "lb_master_cr_public_ip" {
   value = aws_instance.lb.public_ip
 }
-

@@ -2,7 +2,7 @@ variable "lb_binding" {
   type = map(any)
   default = {
     "pg_binding" = {
-      ip   = "172.30.12.100"
+      ip   = ""
       port = "5432"
       backend = {
         cr_master = "172.30.12.78:5432"
