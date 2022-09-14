@@ -14,13 +14,13 @@ data "aws_ami" "debian" {
   owners = ["136693071363"]
 }
 
-resource "aws_key_pair" "lb_key" {
+resource "aws_key_pair" "lb" {
   key_name   = "kmz"
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIESr7RepHsk0YZ2ZzOlciHygJBv5NU/XxdRew5QRiOPi admin"
 }
 
 # Find the subnet that matches our DB CIDR
-data "aws_subnet" "lb_subnet" {
+data "aws_subnet" "lb" {
   filter {
     name   = "cidr-block"
     values = [var.subnet_cidr]

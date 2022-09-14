@@ -1,8 +1,8 @@
-resource "aws_security_group" "lb_group" {
+resource "aws_security_group" "lb" {
   name        = "HaProxy LB Security Group"
   description = "HaProxy LB Security Group"
   tags        = var.lb_tags
-  vpc_id      = data.aws_subnet.lb_subnet.vpc_id
+  vpc_id      = data.aws_subnet.lb.vpc_id
 
   ingress {
     description = "local"
