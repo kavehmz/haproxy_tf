@@ -20,3 +20,10 @@ variable "subnet_cidr" {
   type    = string
   default = "172.30.12.0/24"
 }
+
+variable "lb_tags" {
+  type = map(string)
+  default = {
+    Name = "demo"
+  }
+}

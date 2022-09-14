@@ -1,21 +1,15 @@
 
-resource "aws_network_interface" "lb_master_cr" {
-  subnet_id       = data.aws_subnet.lb_subnet.id
-  security_groups = [aws_security_group.lb_group.id]
-
-  # IP addresses per network interface per instance type
-  # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI
+resource "aws_network_interface" "lb" {
+  subnet_id               = data.aws_subnet.lb_subnet.id
+  security_groups         = [aws_security_group.lb_group.id]
   private_ip_list_enabled = true
   private_ip_list         = var.lb_ips
-
-  tags = {
-    Name = "lb_vr_replica"
-  }
+  tags                    = var.lb_tags
 }
 
-resource "aws_eip" "lb_public_ip" {
+resource "aws_eip" "ip" {
   vpc                       = true
-  network_interface         = aws_network_interface.lb_master_cr.id
+  network_interface         = aws_network_interface.lb.id
   associate_with_private_ip = var.lb_ips[0]
 }
 
@@ -32,15 +26,14 @@ resource "aws_instance" "lb_master_cr" {
   user_data_replace_on_change = true
   key_name                    = aws_key_pair.kmz.key_name
   monitoring                  = true
+  tags                        = var.lb_tags
 
   network_interface {
     network_interface_id = aws_network_interface.lb_master_cr.id
     device_index         = 0
   }
 
-  tags = {
-    Name = "lb_vr_replica"
-  }
+
 }
 
 output "lb_master_cr_public_ip" {
