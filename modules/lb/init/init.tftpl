@@ -7,3 +7,8 @@ ${haproxycfg}
 EOT
 
 systemctl restart haproxy.service
+# setup datadog
+hostnamectl set-hostname ${hostname}
+DD_INSTALL_ONLY=true DD_API_KEY=${dd_key} DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+echo "hostname: ${hostname}" >> /etc/datadog-agent/datadog.yaml
+/etc/init.d/datadog-agent start
