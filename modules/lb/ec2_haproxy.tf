@@ -8,6 +8,9 @@ resource "aws_network_interface" "lb" {
 }
 
 resource "aws_eip" "ip" {
+  depends_on = [
+    aws_instance.lb
+  ]
   vpc                       = true
   network_interface         = aws_network_interface.lb.id
   associate_with_private_ip = var.lb_ips[0]

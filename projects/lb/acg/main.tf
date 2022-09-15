@@ -7,3 +7,7 @@ module "lb" {
   ami             = data.aws_ami.debian.id
   key_name        = aws_key_pair.lb.key_name
 }
+
+output "lb_public_ip" {
+  value = module.lb.lb_public_ip
+}
