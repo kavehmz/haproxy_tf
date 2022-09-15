@@ -21,9 +21,19 @@ variable "subnet_cidr" {
   default = "172.31.16.0/20"
 }
 
+variable "hostname" {
+  type    = string
+  default = "lb-vr-replica.regentmarkets.com"
+}
+
+variable "dd_key" {
+  type = string
+}
+
 variable "lb_tags" {
   type = map(string)
   default = {
     Name = "demo"
   }
 }
+

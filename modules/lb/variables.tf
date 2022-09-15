@@ -22,6 +22,14 @@ variable "key_name" {
   type = string
 }
 
+variable "hostname" {
+  type = string
+}
+
+variable "dd_key" {
+  type = string
+}
+
 # TODO: Remove
 variable "lb_binding" {
   type = map(any)

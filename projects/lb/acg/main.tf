@@ -6,6 +6,8 @@ module "lb" {
   lb_tags         = var.lb_tags
   ami             = data.aws_ami.debian.id
   key_name        = aws_key_pair.lb.key_name
+  hostname        = var.hostname
+  dd_key          = var.dd_key
 }
 
 output "lb_public_ip" {

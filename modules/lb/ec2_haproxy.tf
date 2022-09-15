@@ -20,7 +20,7 @@ resource "aws_instance" "lb" {
   ami                         = var.ami
   instance_type               = "t3.medium"
   user_data                   = local.user_data
-  user_data_replace_on_change = true
+  user_data_replace_on_change = false
   key_name                    = var.key_name
   monitoring                  = true
   tags                        = var.lb_tags
