@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
-apt-get update
-apt-get install -y haproxy htop
+curl https://haproxy.debian.net/bernat.debian.org.gpg \
+     >/etc/apt/trusted.gpg.d/haproxy.debian.net.asc
 
-cat > /etc/haproxy/haproxy.cfg << EOT
+cat >/etc/apt/sources.list.d/haproxy.list <<EOF
+deb http://haproxy.debian.net bullseye-backports-2.6 main
+EOF
+
+apt-get update
+apt-get install -y haproxy=2.6.\* htop
+
+cat >/etc/haproxy/haproxy.cfg <<EOF
 ${haproxycfg}
-EOT
+EOF
 
 systemctl restart haproxy.service

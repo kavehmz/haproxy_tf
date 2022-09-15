@@ -13,7 +13,7 @@ variable "lb_binding" {
 
 variable "lb_ips" {
   type    = list(string)
-  default = ["172.31.0.11", "172.31.0.12", "172.31.0.13", "172.31.0.14"]
+  default = ["172.31.0.11"]
 }
 
 variable "test_client_ip" {

@@ -45,7 +45,7 @@ resource "aws_instance" "tests" {
   count         = 2
   ami           = data.aws_ami.debian.id
   instance_type = "t3.medium"
-  key_name      = aws_key_pair.kmz.key_name
+  key_name      = aws_key_pair.tf.key_name
   network_interface {
     network_interface_id = aws_network_interface.tests[count.index].id
     device_index         = 0
@@ -68,7 +68,7 @@ resource "aws_network_interface" "test_client" {
 resource "aws_instance" "test_client" {
   ami           = data.aws_ami.debian.id
   instance_type = "t3.medium"
-  key_name      = aws_key_pair.kmz.key_name
+  key_name      = aws_key_pair.tf.key_name
   network_interface {
     network_interface_id = aws_network_interface.test_client.id
     device_index         = 0

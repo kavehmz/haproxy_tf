@@ -14,9 +14,9 @@ data "aws_ami" "debian" {
   owners = ["136693071363"]
 }
 
-resource "aws_key_pair" "kmz" {
-  key_name   = "kmz"
-  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIESr7RepHsk0YZ2ZzOlciHygJBv5NU/XxdRew5QRiOPi kaveh"
+resource "aws_key_pair" "tf" {
+  key_name   = "tf"
+  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDiWX8vhtCS76J4o0tWaf8vSWMzbWmL3+3o+cN3Ac6D/ tf"
 }
 
 data "aws_subnet" "lb_subnet" {

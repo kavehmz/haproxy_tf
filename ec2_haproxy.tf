@@ -25,7 +25,7 @@ resource "aws_instance" "lb_master_cr" {
   instance_type               = "t3.medium"
   user_data                   = local.user_data
   user_data_replace_on_change = true
-  key_name                    = aws_key_pair.kmz.key_name
+  key_name                    = aws_key_pair.tf.key_name
 
   network_interface {
     network_interface_id = aws_network_interface.lb_master_cr.id
